@@ -86,7 +86,6 @@ local function ensure_rocks(rocks)
 		luarocks:close()
 	else
 		build()
-		return
 	end
 
 	local file, error = io.open(paths.rockspec, "w+")
