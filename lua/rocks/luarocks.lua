@@ -45,14 +45,14 @@ local paths = {
 }
 
 local function ensure_rocks(rocks)
-	if not vim.fn.isdirectory(paths.rocks) then
+	if vim.fn.isdirectory(paths.rocks) ~= 0 then
 		notify_info("Can't install rocks until build has completed")
 		return
 	end
 
 	local file, error = io.open(paths.rockspec, "w")
 
-	assert(file, "[rocks] Failed to write rockspec file " .. error)
+	assert(file, "[rocks] Failed to write rockspec file " .. (error or ""))
 
 	file:write(string.format(
 		[[
