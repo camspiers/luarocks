@@ -1,11 +1,12 @@
 local plugin = "rocks"
 
 local function notify_info(message)
-	vim.notify(message, vim.log.levels.INFO, { title = plugin, animate = false })
-end
-
-local function notify_error(message)
-	vim.notify(message, vim.log.levels.ERROR, { title = plugin, animate = false })
+	local exists, notify = pcall(require, "notify")
+	if exists then
+		notify(message, vim.log.levels.INFO, { title = plugin, animate = false })
+	else
+		vim.notify(message, vim.log.levels.INFO)
+	end
 end
 
 local function is_win()
