@@ -4,10 +4,6 @@ local function notify_info(message)
 	vim.notify(message, vim.log.levels.INFO, { title = plugin, animate = false })
 end
 
-local function notify_error(message)
-	vim.notify(message, vim.log.levels.ERROR, { title = plugin, animate = false })
-end
-
 local function is_win()
 	return vim.loop.os_uname().sysname == "Windows_NT"
 end
@@ -53,11 +49,11 @@ local function ensure_rocks(rocks)
 	if luarocks then
 		luarocks:close()
 	else
-		-- notify_error("You must run `nvim -l lua/rocks/build.lua`")
+		notify_info("Build rocks")
 		os.execute(combine_paths(plugin_path, "build.sh"))
 	end
 
-	local file, error = io.open(paths.rockspec, "w")
+	local file, error = io.open(paths.rockspec, "w+")
 	assert(file, "[rocks] Failed to write rockspec file " .. (error or ""))
 
 	file:write(string.format(
