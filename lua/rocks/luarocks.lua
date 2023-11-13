@@ -48,13 +48,14 @@ local paths = {
 }
 
 local function ensure_rocks(rocks)
-	if vim.fn.isdirectory(paths.rocks) == 0 then
+	local file = io.open(paths.luarocks, "r")
+
+	if file then
+		file:close()
+	else
 		-- notify_error("You must run `nvim -l lua/rocks/build.lua`")
 		os.execute(combine_paths(plugin_path, "build.sh"))
-		return
 	end
-
-	local file, error = io.open(paths.rockspec, "w")
 
 	assert(file, "[rocks] Failed to write rockspec file " .. (error or ""))
 
