@@ -95,9 +95,13 @@ end
 
 local function build()
 	ensure_python()
+	vim.wait(50)
 	create_python_venv()
+	vim.wait(50)
 	install_hererocks()
+	vim.wait(50)
 	build_lua()
+	vim.wait(50)
 end
 
 return {
