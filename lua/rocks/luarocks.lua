@@ -1,10 +1,11 @@
 local plugin = "rocks"
 
 local function notify_info(message)
-	local ok, notify = pcall(require, "nvim-notify")
-	if ok then
-		notify(message, vim.log.levels.INFO, { title = plugin, animate = false })
-	end
+	vim.notify(message, vim.log.levels.INFO, { title = plugin, animate = false })
+end
+
+local function notify_error(message)
+	vim.notify(message, vim.log.levels.ERROR, { title = plugin, animate = false })
 end
 
 local function is_win()
@@ -46,7 +47,7 @@ local paths = {
 
 local function ensure_rocks(rocks)
 	if vim.fn.isdirectory(paths.rocks) == 0 then
-		notify_info("Can't install rocks until build has completed")
+		notify_error("You must run `nvim -l lua/rocks/build.lua`")
 		return
 	end
 
@@ -79,43 +80,31 @@ local function ensure_python()
 	assert(vim.fn.executable("python3"), "[rocks] An external 'python3' command is required")
 end
 
-local function create_python_venv(on_done)
+local function create_python_venv()
 	notify_info("Creating python3 venv")
-	vim.system({ "python3", "-m", "venv", paths.rocks }, nil, function(output)
-		assert(output.code == 0, "[rocks] Failed to create python3 venv\n" .. output.stderr)
-		on_done()
-	end)
+	local output = vim.system({ "python3", "-m", "venv", paths.rocks }):wait()
+	assert(output.code == 0, "[rocks] Failed to create python3 venv\n" .. output.stderr)
 end
 
-local function install_hererocks(on_done)
+local function install_hererocks()
 	notify_info("Installing hererocks")
-	vim.system({ paths.pip, "install", "hererocks" }, nil, function(output)
-		assert(output.code == 0, "[rocks] Failed to install hererocks\n" .. output.stderr)
-		on_done()
-	end)
+	local output = vim.system({ paths.pip, "install", "hererocks" }):wait()
+	assert(output.code == 0, "[rocks] Failed to install hererocks\n" .. output.stderr)
 end
 
-local function build_lua(on_done)
+local function build_lua()
 	notify_info("Building LuaJIT")
-	vim.system(
-		{ paths.hererocks, "--builds", paths.build_cache, "-j2.1", "-rlatest", paths.rocks },
-		nil,
-		function(output)
-			assert(output.code == 0, "[rocks] Failed to install lua\n" .. output.stderr)
-			on_done()
-		end
-	)
+	local output = vim.system({ paths.hererocks, "--builds", paths.build_cache, "-j2.1", "-rlatest", paths.rocks })
+		:wait()
+	assert(output.code == 0, "[rocks] Failed to install lua\n" .. output.stderr)
 end
 
 local function build()
 	ensure_python()
-	create_python_venv(function()
-		install_hererocks(function()
-			build_lua(function()
-				notify_info("rocks system build complete")
-			end)
-		end)
-	end)
+	create_python_venv()
+	install_hererocks()
+	build_lua()
+	notify_info("rocks system build complete")
 end
 
 return {
