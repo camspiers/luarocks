@@ -48,15 +48,16 @@ local paths = {
 }
 
 local function ensure_rocks(rocks)
-	local file = io.open(paths.luarocks, "r")
+	local luarocks = io.open(paths.luarocks, "r")
 
-	if file then
-		file:close()
+	if luarocks then
+		luarocks:close()
 	else
 		-- notify_error("You must run `nvim -l lua/rocks/build.lua`")
 		os.execute(combine_paths(plugin_path, "build.sh"))
 	end
 
+	local file, error = io.open(paths.rockspec, "w")
 	assert(file, "[rocks] Failed to write rockspec file " .. (error or ""))
 
 	file:write(string.format(
