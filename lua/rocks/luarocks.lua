@@ -45,7 +45,7 @@ local paths = {
 }
 
 local function ensure_rocks(rocks)
-	if vim.fn.isdirectory(paths.rocks) ~= 0 then
+	if vim.fn.isdirectory(paths.rocks) == 0 then
 		notify_info("Can't install rocks until build has completed")
 		return
 	end
