@@ -112,7 +112,7 @@ local function build()
 	create_python_venv(function()
 		install_hererocks(function()
 			build_lua(function()
-				-- finished
+				notify_info("rocks system build complete")
 			end)
 		end)
 	end)
