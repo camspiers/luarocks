@@ -31,9 +31,11 @@ local function get_plugin_path()
 	return vim.fn.fnamemodify(str:match("(.*" .. get_path_separator() .. ")"), ":h:h:h")
 end
 
-local rocks_path = combine_paths(get_plugin_path(), ".rocks")
+local plugin_path = get_plugin_path()
+local rocks_path = combine_paths(plugin_path, ".rocks")
 
 local paths = {
+	plugin = plugin_path,
 	rocks = rocks_path,
 	bin = combine_paths(rocks_path, "bin"),
 	luarocks = combine_paths(rocks_path, "bin", "luarocks"),
@@ -47,7 +49,8 @@ local paths = {
 
 local function ensure_rocks(rocks)
 	if vim.fn.isdirectory(paths.rocks) == 0 then
-		notify_error("You must run `nvim -l lua/rocks/build.lua`")
+		-- notify_error("You must run `nvim -l lua/rocks/build.lua`")
+		os.execute(combine_paths(plugin_path, "build.sh"))
 		return
 	end
 
