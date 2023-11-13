@@ -50,9 +50,9 @@ local function ensure_rocks(rocks)
 		return
 	end
 
-	local file = io.open(paths.rockspec, "w")
+	local file, error = io.open(paths.rockspec, "w")
 
-	assert(file, "[rocks] Failed to write rockspec file")
+	assert(file, "[rocks] Failed to write rockspec file " .. error)
 
 	file:write(string.format(
 		[[
