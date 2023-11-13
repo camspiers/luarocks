@@ -1,10 +1,7 @@
 local plugin = "rocks"
 
-local last_notification = nil
-
 local function notify_info(message)
-	last_notification =
-		vim.notify(message, vim.log.levels.INFO, { replace = last_notification, title = plugin, animate = false })
+	vim.notify(message, vim.log.levels.INFO, { title = plugin, animate = false })
 end
 
 local function is_win()
@@ -98,7 +95,6 @@ local function build()
 	create_python_venv()
 	install_hererocks()
 	build_lua()
-	last_notification = nil
 end
 
 return {
