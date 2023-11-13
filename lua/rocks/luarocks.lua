@@ -49,7 +49,7 @@ local paths = {
 }
 
 local function ensure_python()
-	notify_info("Ensuring python3 is installed")
+	notify_info("Checking python3 is installed")
 	assert(vim.fn.executable("python3"), "[rocks] An external 'python3' command is required")
 end
 
@@ -73,6 +73,7 @@ local function build_lua()
 end
 
 local function build()
+	notify_info("Starting build")
 	ensure_python()
 	create_python_venv()
 	install_hererocks()
@@ -80,15 +81,7 @@ local function build()
 	notify_info("Build complete")
 end
 
-local function ensure_rocks(rocks)
-	local luarocks = io.open(paths.luarocks, "r")
-
-	if luarocks then
-		luarocks:close()
-	else
-		build()
-	end
-
+local function install_rocks(rocks)
 	local file, error = io.open(paths.rockspec, "w+")
 	assert(file, "[rocks] Failed to write rockspec file " .. (error or ""))
 
@@ -110,6 +103,37 @@ build = {
 	local output = vim.system({ paths.luarocks, "install", "--deps-only", paths.rockspec }):wait()
 
 	assert(output.code == 0, "[rocks] Failed to install from rockspec\n" .. output.stderr)
+end
+
+local function ensure_rocks(rocks)
+	local luarocks = io.open(paths.luarocks, "r")
+
+	if luarocks then
+		luarocks:close()
+	else
+		build()
+	end
+
+	local installed_output = vim.system({ paths.luarocks, "list", "--porcelain" }):wait()
+	local installed_lines = vim.tbl_filter(function(line)
+		return line ~= ""
+	end, vim.split(installed_output.stdout, "\n"))
+	local installed_rocks = vim.tbl_map(function(line)
+		return vim.split(line, "\t")[1]
+	end, installed_lines)
+
+	local missing_rocks = {}
+	for _, rock in ipairs(rocks) do
+		if not vim.tbl_contains(installed_rocks, rock) then
+			table.insert(missing_rocks, rock)
+		end
+	end
+
+	if #missing_rocks ~= 0 then
+		notify_info("Installing missing rocks: " .. table.concat(missing_rocks, ", "))
+		install_rocks(rocks)
+		notify_info("Rocks installed: " .. table.concat(missing_rocks, ", "))
+	end
 end
 
 return {
