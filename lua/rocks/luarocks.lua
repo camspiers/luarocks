@@ -98,6 +98,7 @@ local function build()
 	create_python_venv()
 	install_hererocks()
 	build_lua()
+	last_notification = nil
 end
 
 return {
