@@ -49,8 +49,9 @@ local function ensure_rocks(rocks)
 	if luarocks then
 		luarocks:close()
 	else
-		notify_info("Build rocks")
-		os.execute(combine_paths(plugin_path, "build.sh"))
+		-- notify_info("Build rocks")
+		-- os.execute(combine_paths(plugin_path, "build.sh"))
+		return
 	end
 
 	local file, error = io.open(paths.rockspec, "w+")
