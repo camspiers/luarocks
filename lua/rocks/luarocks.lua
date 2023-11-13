@@ -77,7 +77,7 @@ local function build()
 	create_python_venv()
 	install_hererocks()
 	build_lua()
-	notify_info("rocks system build complete")
+	notify_info("Build complete")
 end
 
 local function ensure_rocks(rocks)
