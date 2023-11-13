@@ -47,39 +47,6 @@ local paths = {
 	rockspec = combine_paths(rocks_path, "neovim-rocks-user-rockspec-0.0-0.rockspec"),
 }
 
-local function ensure_rocks(rocks)
-	local luarocks = io.open(paths.luarocks, "r")
-
-	if luarocks then
-		luarocks:close()
-	else
-		notify_error("rocks system not built, run nvim -l build.lua")
-		return
-	end
-
-	local file, error = io.open(paths.rockspec, "w+")
-	assert(file, "[rocks] Failed to write rockspec file " .. (error or ""))
-
-	file:write(string.format(
-		[[
-package = "neovim-rocks-user-rockspec"
-version = "0.0-0"
-source = { url = "some-fake-url" }
-dependencies = %s
-build = {
-  type = "builtin"
-}
-]],
-		vim.inspect(rocks)
-	))
-
-	file:close()
-
-	local output = vim.system({ paths.luarocks, "install", "--deps-only", paths.rockspec }):wait()
-
-	assert(output.code == 0, "[rocks] Failed to install from rockspec\n" .. output.stderr)
-end
-
 local function ensure_python()
 	notify_info("Ensuring python3 is installed")
 	assert(vim.fn.executable("python3"), "[rocks] An external 'python3' command is required")
@@ -110,6 +77,39 @@ local function build()
 	install_hererocks()
 	build_lua()
 	notify_info("rocks system build complete")
+end
+
+local function ensure_rocks(rocks)
+	local luarocks = io.open(paths.luarocks, "r")
+
+	if luarocks then
+		luarocks:close()
+	else
+		build()
+		return
+	end
+
+	local file, error = io.open(paths.rockspec, "w+")
+	assert(file, "[rocks] Failed to write rockspec file " .. (error or ""))
+
+	file:write(string.format(
+		[[
+package = "neovim-rocks-user-rockspec"
+version = "0.0-0"
+source = { url = "some-fake-url" }
+dependencies = %s
+build = {
+  type = "builtin"
+}
+]],
+		vim.inspect(rocks)
+	))
+
+	file:close()
+
+	local output = vim.system({ paths.luarocks, "install", "--deps-only", paths.rockspec }):wait()
+
+	assert(output.code == 0, "[rocks] Failed to install from rockspec\n" .. output.stderr)
 end
 
 return {
