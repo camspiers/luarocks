@@ -34,7 +34,7 @@ For users utilizing other plugin managers, manual setup is required. Use the fol
 require("rocks").setup({ rocks = { "fzy" } })
 ```
 
-Adjust the `rocks` array to include the names of the LuaRocks packages you want to install. Additionally, you can include other configuration options as needed.
+Adjust the `rocks` array to include the names of the LuaRocks packages you want to install.
 
 ## Optional Dependencies
 
