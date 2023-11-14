@@ -1,6 +1,5 @@
 local paths = require("rocks.paths")
 local notify = require("rocks.notify")
-local build = require("rocks.build")
 
 local function install(rocks)
 	local file, error = io.open(paths.rockspec, "w+")
@@ -27,23 +26,19 @@ build = {
 end
 
 local function ensure(rocks)
-	local luarocks = io.open(paths.luarocks, "r")
-
-	if luarocks then
-		luarocks:close()
-	else
-		build.build()
-	end
-
 	local installed_output = vim.system({ paths.luarocks, "list", "--porcelain" }):wait()
+
 	local installed_lines = vim.tbl_filter(function(line)
 		return line ~= ""
 	end, vim.split(installed_output.stdout, "\n"))
+
 	local installed_rocks = vim.tbl_map(function(line)
 		return vim.split(line, "\t")[1]
 	end, installed_lines)
 
 	local missing_rocks = {}
+
+	-- Build the missing rocks
 	for _, rock in ipairs(rocks) do
 		if not vim.tbl_contains(installed_rocks, rock) then
 			table.insert(missing_rocks, rock)

@@ -5,6 +5,15 @@ local function is_darwin()
 	return vim.loop.os_uname().sysname == "Darwin"
 end
 
+local function is_prepared()
+	local file = io.open(paths.luarocks, "r")
+	if file then
+		file:close()
+		return true
+	end
+	return false
+end
+
 local steps = {
 	{
 		description = "Checking python3 exists",
@@ -60,4 +69,5 @@ end
 
 return {
 	build = build,
+	is_prepared = is_prepared,
 }
