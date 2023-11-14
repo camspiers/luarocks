@@ -76,7 +76,9 @@ local function build_lua()
 	local opts = nil
 	if is_darwin() then
 		opts = {
-			MACOSX_DEPLOYMENT_TARGET = "10.6",
+			env = {
+				MACOSX_DEPLOYMENT_TARGET = "10.6",
+			},
 		}
 	end
 	local output =
