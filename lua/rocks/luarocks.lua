@@ -13,6 +13,12 @@ local function is_win()
 	return vim.loop.os_uname().sysname == "Windows_NT"
 end
 
+local function is_darwin()
+	return vim.loop.os_uname().sysname == "Darwin"
+end
+
+-- MACOSX_DEPLOYMENT_TARGET=10.6
+
 local function get_path_separator()
 	if is_win() then
 		return "\\"
@@ -67,8 +73,14 @@ end
 
 local function build_lua()
 	notify_info("Building LuaJIT")
-	local output = vim.system({ paths.hererocks, "--builds", paths.build_cache, "-j2.1", "-rlatest", paths.rocks })
-		:wait()
+	local opts = nil
+	if is_darwin() then
+		opts = {
+			MACOSX_DEPLOYMENT_TARGET = "10.6",
+		}
+	end
+	local output =
+		vim.system({ paths.hererocks, "--builds", paths.build_cache, "-j2.1", "-rlatest", paths.rocks }, opts):wait()
 	assert(output.code == 0, "[rocks] Failed to install lua\n" .. output.stderr)
 end
 
