@@ -1,7 +1,8 @@
 local plugin = "rocks"
 
-local function info(message)
+local function info(messages)
 	local exists, notify = pcall(require, "notify")
+	local message = type(messages) == "table" and table.concat(messages, "\n") or messages
 	if exists then
 		notify(message, vim.log.levels.INFO, { title = plugin, animate = false })
 	else
@@ -9,10 +10,11 @@ local function info(message)
 	end
 end
 
-local function error(message, err)
+local function error(messages)
 	local exists, notify = pcall(require, "notify")
+	local message = type(messages) == "table" and table.concat(messages, "\n") or messages
 	if exists then
-		notify({ message, err }, vim.log.levels.ERROR, { title = plugin, animate = false })
+		notify(message, vim.log.levels.ERROR, { title = plugin, animate = false })
 	else
 		vim.notify(message, vim.log.levels.INFO)
 	end

@@ -1,5 +1,6 @@
 local paths = require("rocks.paths")
 local notify = require("rocks.notify")
+local rocks = require("rocks.rocks")
 
 local function is_darwin()
 	return vim.loop.os_uname().sysname == "Darwin"
@@ -54,20 +55,31 @@ local steps = {
 	},
 }
 
+local rocks_after_build = nil
+
 local function build()
 	notify.info("Build started")
 	for _, step in ipairs(steps) do
 		notify.info(step.description)
 		local ok, error = pcall(step.task)
 		if not ok then
-			notify.error("Build failed", error)
+			notify.error({ "Build failed", error })
 			return
 		end
 	end
 	notify.info("Build completed")
+	if rocks_after_build then
+		rocks.ensure(rocks_after_build)
+	end
 end
 
 return {
 	build = build,
 	is_prepared = is_prepared,
+	-- This is a bit funky. In short setup runs before build
+	-- So if setup received rocks to install, we need to process the install
+	-- after the build
+	ensure_rocks_after_build = function(ensure_rocks)
+		rocks_after_build = ensure_rocks
+	end,
 }

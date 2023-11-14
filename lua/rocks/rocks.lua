@@ -46,9 +46,9 @@ local function ensure(rocks)
 	end
 
 	if #missing_rocks ~= 0 then
-		notify.info("Installing missing rocks: " .. table.concat(missing_rocks, ", "))
+		notify.info({ "Installing rocks:", table.concat(missing_rocks, ",") })
 		install(rocks)
-		notify.info("Rocks installed: " .. table.concat(missing_rocks, ", "))
+		notify.info({ "Installed rocks:", table.concat(missing_rocks, ",") })
 	end
 end
 

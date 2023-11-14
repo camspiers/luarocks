@@ -7,19 +7,19 @@ return {
 		package.path = package.path .. ";" .. paths.share
 		package.cpath = package.cpath .. ";" .. paths.lib
 
-		-- NOTE: This is highly synchronous, but async build steps
-		-- don't seem to play well with lazy.nvim, and nor does
-		-- build.lua (for lazy.nvim) seem to wait until it's complete
-		-- before running setup()
-
-		-- Check that the system is ready to install rocks
-		if not build.is_prepared() then
-			build.build()
+		-- There are not rocks requests
+		if not opts.rocks or #opts.rocks == 0 then
+			return
 		end
 
-		-- We have requested rocks so ensure they are installed
-		if opts.rocks and #opts.rocks > 0 then
+		-- Check that the system is ready to install rocks
+		if build.is_prepared() then
+			-- We have requested rocks so ensure they are installed
 			rocks.ensure(opts.rocks)
+		else
+			-- We haven't built yet so register the rocks
+			-- to be installed after build finishes
+			build.ensure_rocks_after_build(opts.rocks)
 		end
 	end,
 }
