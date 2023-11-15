@@ -46,7 +46,7 @@ local function ensure(rocks)
 	end
 
 	if #missing_rocks ~= 0 then
-		local record = notify.info({ "⌛ Installing rocks:", table.concat(missing_rocks, ",") })
+		local record = notify.info({ "⌛ Installing rocks:\n", table.concat(missing_rocks, ",") })
 		install(rocks)
 		notify.info("✅ Installed rocks", record)
 	end
