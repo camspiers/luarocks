@@ -60,7 +60,7 @@ The `rocks.nvim` plugin includes a build process to ensure proper functionality.
 
 2. **Creating Python3 Virtual Environment**: Establishes a Python3 virtual environment for the plugin.
 
-3. **Installing hererocks**: Installs the `hererocks` tool.
+3. **Installing hererocks**: Installs the `hererocks` tool. Used for installing Luarocks.
 
 4. **Installing LuaJIT**: Installs LuaJIT, with additional configuration for macOS.
 
