@@ -70,12 +70,12 @@ local rocks_after_build = nil
 local function build()
 	notify.info("Build started")
 	for _, step in ipairs(steps) do
-		local record = notify.info(step.description)
+		local record = notify.info("⌛ " .. step.description)
 		local ok, error = pcall(step.task)
 		if ok then
-			notify.info(step.description .. " ✅", record)
+			notify.info("✅ " .. step.description, record)
 		else
-			notify.error({ step.description .. " ❌", error }, record)
+			notify.error({ "❌ " .. step.description, error }, record)
 			return
 		end
 	end
