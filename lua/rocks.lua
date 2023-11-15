@@ -4,7 +4,14 @@ local build = require("rocks.build")
 
 return {
 	setup = function(opts)
+		-- Register an install command
+		vim.api.nvim_create_user_command("RocksInstall", function(o)
+			rocks.install(o.fargs)
+		end, { nargs = "+" })
+
+		-- Make lua scripts available
 		package.path = package.path .. ";" .. paths.share
+		-- Make .so files available
 		package.cpath = package.cpath .. ";" .. paths.lib
 
 		-- There are not rocks requests
