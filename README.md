@@ -4,7 +4,8 @@
 
 ## Requirements
 
-`rocks.nvim` has minimal requirements to ensure a smooth installation process. The primary requirement is having Python3 available in your system's PATH. It's important to note that Python3 is utilized solely for the installation of the `luarocks` tool and is not integrated into Neovim itself.
+- An up-to-date Neovim nightly (>= 0.10) installation.
+- python3 on system path (not required to be integrated into neovim, only on PATH)
 
 ## Usage
 
