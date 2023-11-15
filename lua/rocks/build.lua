@@ -12,19 +12,18 @@ local function is_darwin()
 end
 
 local function is_prepared()
-	local file = io.open(paths.luarocks, "r")
-	if file then
-		file:close()
-		return true
-	end
-	return false
+	return vim.fn.executable(paths.luarocks)
+end
+
+local function is_python_available()
+	return vim.fn.executable("python3")
 end
 
 local steps = {
 	{
 		description = "Checking python3 exists",
 		task = function()
-			assert(vim.fn.executable("python3"), "An external 'python3' command is required")
+			assert(is_python_available(), "An external 'python3' command is required")
 		end,
 	},
 	{
@@ -88,6 +87,7 @@ end
 return {
 	build = build,
 	is_prepared = is_prepared,
+	is_python_available = is_python_available,
 	-- This is a bit funky. In short setup runs before build
 	-- So if setup received rocks to install, we need to process the install
 	-- after the build
