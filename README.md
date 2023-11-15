@@ -66,10 +66,10 @@ The `rocks.nvim` plugin includes a build process to ensure proper functionality.
 
 ### Manual Build Trigger
 
-You can manually trigger the build process using the following command:
+You can manually trigger the build process using the following command inside the plugin root:
 
 ```bash
-nvim -l lua/rocks/build.lua
+nvim -l build.lua
 ```
 
 Executing this command initiates the complete build process, ensuring that all dependencies are properly installed. This manual trigger can be useful in scenarios where you want to ensure a fresh installation or troubleshoot any issues related to the build process.
