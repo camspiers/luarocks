@@ -1,4 +1,4 @@
-local plugin = "rocks"
+local plugin = "rocks.nvim"
 
 local function info(messages, replace)
 	local exists, notify = pcall(require, "notify")
@@ -10,11 +10,11 @@ local function info(messages, replace)
 	end
 end
 
-local function error(messages)
+local function error(messages, replace)
 	local exists, notify = pcall(require, "notify")
 	local message = type(messages) == "table" and table.concat(messages, "\n") or messages
 	if exists then
-		notify(message, vim.log.levels.ERROR, { title = plugin, animate = false })
+		notify(message, vim.log.levels.ERROR, { replace = replace, title = plugin, animate = false })
 	else
 		vim.notify(message, vim.log.levels.INFO)
 	end

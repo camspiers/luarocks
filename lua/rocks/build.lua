@@ -2,6 +2,11 @@ local paths = require("rocks.paths")
 local notify = require("rocks.notify")
 local rocks = require("rocks.rocks")
 
+local versions = {
+	LUA_JIT = "2.1",
+	LUA_ROCKS = "latest",
+}
+
 local function is_darwin()
 	return vim.loop.os_uname().sysname == "Darwin"
 end
@@ -47,9 +52,14 @@ local steps = {
 					},
 				}
 			end
-			local output =
-				vim.system({ paths.hererocks, "--builds", paths.build_cache, "-j2.1", "-rlatest", paths.rocks }, opts)
-					:wait()
+			local output = vim.system({
+				paths.hererocks,
+				"--builds",
+				paths.build_cache,
+				string.format("-j%s", versions.LUA_JIT),
+				string.format("-r%s", versions.LUA_ROCKS),
+				paths.rocks,
+			}, opts):wait()
 			assert(output.code == 0, "Failed to install LuaJIT\n" .. output.stderr)
 		end,
 	},
@@ -65,7 +75,7 @@ local function build()
 		if ok then
 			notify.info(step.description .. " ✅", record)
 		else
-			notify.error({ "Build failed", error })
+			notify.error({ step.description .. " ❌", error }, record)
 			return
 		end
 	end
