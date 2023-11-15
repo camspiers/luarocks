@@ -2,6 +2,8 @@
 
 `luarocks.nvim` is a Neovim plugin designed to streamline the installation of LuaRocks packages directly within Neovim. It simplifies the process of managing Lua dependencies, ensuring a hassle-free experience for Neovim users.
 
+[Screencast from 2023-11-15 21-29-55.webm](https://github.com/camspiers/luarocks/assets/51294/89fde778-c9da-4fa0-bde9-a4093f7df617)
+
 ## Requirements
 
 - An up-to-date Neovim nightly (>= 0.10) installation.
