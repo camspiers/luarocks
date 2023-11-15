@@ -1,6 +1,6 @@
-local paths = require("rocks.paths")
-local rocks = require("rocks.rocks")
-local build = require("rocks.build")
+local paths = require("luarocks.paths")
+local rocks = require("luarocks.rocks")
+local build = require("luarocks.build")
 
 return {
 	setup = function(opts)

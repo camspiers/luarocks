@@ -1,4 +1,4 @@
-local plugin = "rocks.nvim"
+local plugin = "luarocks.nvim"
 
 local function info(messages, replace)
 	local exists, notify = pcall(require, "notify")

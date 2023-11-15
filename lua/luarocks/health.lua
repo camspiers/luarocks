@@ -1,12 +1,12 @@
-local build = require("rocks.build")
+local build = require("luarocks.build")
 
 return {
 	check = function()
-		vim.health.start("rocks")
+		vim.health.start("luarocks")
 		if build.is_prepared() then
-			vim.health.ok("rocks system is prepared and ready to install luarocks")
+			vim.health.ok("luarocks system is prepared and ready to install luarocks")
 		else
-			vim.health.info("rocks system is not prepared")
+			vim.health.info("luarocks system is not prepared")
 			if build.is_python_available() then
 				vim.health.ok("python3 is available on PATH, and rocks system is ready to be built")
 			else

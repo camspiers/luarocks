@@ -1,6 +1,6 @@
-local paths = require("rocks.paths")
-local notify = require("rocks.notify")
-local rocks = require("rocks.rocks")
+local paths = require("luarocks.paths")
+local notify = require("luarocks.notify")
+local rocks = require("luarocks.rocks")
 
 local versions = {
 	LUA_JIT = "2.1",

@@ -1,6 +1,6 @@
-# Rocks.nvim
+# Luarocks.nvim
 
-`rocks.nvim` is a Neovim plugin designed to streamline the installation of LuaRocks packages directly within Neovim. It simplifies the process of managing Lua dependencies, ensuring a hassle-free experience for Neovim users.
+`luarocks.nvim` is a Neovim plugin designed to streamline the installation of LuaRocks packages directly within Neovim. It simplifies the process of managing Lua dependencies, ensuring a hassle-free experience for Neovim users.
 
 ## Requirements
 
@@ -11,11 +11,11 @@
 
 ### Lazy.nvim Integration
 
-For users employing the Lazy.nvim plugin manager, effortlessly integrate `rocks.nvim` into your configuration by adding the following lines:
+For users employing the Lazy.nvim plugin manager, effortlessly integrate `luarocks.nvim` into your configuration by adding the following lines:
 
 ```lua
 {
-  "camspiers/rocks",
+  "camspiers/luarocks",
   dependencies = {
     "rcarriga/nvim-notify", -- Optional dependency
   },
@@ -25,14 +25,14 @@ For users employing the Lazy.nvim plugin manager, effortlessly integrate `rocks.
 }
 ```
 
-This snippet not only installs the `rocks.nvim` plugin but also provides an option to include additional LuaRocks packages. The "fzy" package is specified as an example.
+This snippet not only installs the `luarocks.nvim` plugin but also provides an option to include additional LuaRocks packages. The "fzy" package is specified as an example.
 
 ### Other Plugin Managers
 
-For users utilizing other plugin managers, manual setup is required. Use the following code to initialize `rocks.nvim`:
+For users utilizing other plugin managers, manual setup is required. Use the following code to initialize `luarocks.nvim`:
 
 ```lua
-require("rocks").setup({ rocks = { "fzy" } })
+require("luarocks").setup({ rocks = { "fzy" } })
 ```
 
 Adjust the `rocks` array to include the names of the LuaRocks packages you want to install.
@@ -43,7 +43,7 @@ If you want nicer notifications during installation, add `rcarriga/nvim-notify` 
 
 ```lua
 {
-  "camspiers/rocks",
+  "camspiers/luarocks",
   dependencies = {
     "rcarriga/nvim-notify", -- Optional dependency
   },
@@ -55,7 +55,7 @@ If you want nicer notifications during installation, add `rcarriga/nvim-notify` 
 
 ## Build Process
 
-The `rocks.nvim` plugin includes a build process to ensure proper functionality. The build process involves the following steps:
+The `luarocks.nvim` plugin includes a build process to ensure proper functionality. The build process involves the following steps:
 
 1. **Checking Python3 Existence**: Ensures the presence of the external 'python3' command.
 

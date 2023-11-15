@@ -1,9 +1,9 @@
-local paths = require("rocks.paths")
-local notify = require("rocks.notify")
+local paths = require("luarocks.paths")
+local notify = require("luarocks.notify")
 
 local function install(rocks)
 	local file, error = io.open(paths.rockspec, "w+")
-	assert(file, "[rocks] Failed to write rockspec file " .. (error or ""))
+	assert(file, "[luarocks] Failed to write rockspec file " .. (error or ""))
 
 	-- Write a fake rockspec file with a list of the user's requested luarocks
 	file:write(string.format(
@@ -23,7 +23,7 @@ build = { type = "builtin" }
 
 	local output = vim.system({ paths.luarocks, "install", "--deps-only", paths.rockspec }):wait()
 
-	assert(output.code == 0, "[rocks] Failed to install from rockspec\n" .. output.stderr)
+	assert(output.code == 0, "[luarocks] Failed to install from rockspec\n" .. output.stderr)
 
 	notify.info("✅ Installed rocks", record)
 end
