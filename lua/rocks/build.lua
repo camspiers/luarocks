@@ -12,11 +12,11 @@ local function is_darwin()
 end
 
 local function is_prepared()
-	return vim.fn.executable(paths.luarocks)
+	return vim.fn.executable(paths.luarocks) == 1
 end
 
 local function is_python_available()
-	return vim.fn.executable("python3")
+	return vim.fn.executable("python3") == 1
 end
 
 local steps = {
